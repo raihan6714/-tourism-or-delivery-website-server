@@ -37,7 +37,6 @@ async function run() {
             console.log(result);
             res.json(result);
         })
-
     } finally {
         // await client.close();
     }
