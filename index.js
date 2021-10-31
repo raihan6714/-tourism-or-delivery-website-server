@@ -21,6 +21,7 @@ async function run() {
         await client.connect();
         const database = client.db("hilltownResort");
         const serviceCollection = database.collection('services');
+        const ordersCollection = database.collection('orders');
 
         //GET API
         app.get('/services', async (req, res) => {
@@ -32,11 +33,17 @@ async function run() {
         //POST API
         app.post('/services', async (req, res) => {
             const service = req.body;
-            console.log('hit the post api', service);
-            const result = await serviceCollection.insertOne(service)
-            console.log(result);
+            const result = await serviceCollection.insertOne(service);
             res.json(result);
         })
+
+        //add order in database
+        app.post("/addOrders", async (req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order)
+            res.json(result);
+        });
+
     } finally {
         // await client.close();
     }
