@@ -58,17 +58,6 @@ async function run() {
             const result = await ordersCollection.deleteOne(query);
             res.send(result);
         })
-
-        // get all order by email query
-        app.get("/myOrders/:email", (req, res) => {
-            console.log(req.params);
-            ordersCollection
-                .find({ email: req.params.email })
-                .toArray((err, results) => {
-                    res.send(results);
-                });
-        });
-
     } finally {
         // await client.close();
     }
