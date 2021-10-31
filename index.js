@@ -30,6 +30,13 @@ async function run() {
             res.send(services);
         })
 
+        //GET API Manage Orders
+        app.get('/manageOrders', async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const mngorder = await cursor.toArray();
+            res.send(mngorder);
+        })
+
         //POST API
         app.post('/services', async (req, res) => {
             const service = req.body;
@@ -42,6 +49,24 @@ async function run() {
             const order = req.body;
             const result = await ordersCollection.insertOne(order)
             res.json(result);
+        });
+
+        //DELETE API
+        app.delete('/deleteOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // get all order by email query
+        app.get("/myOrders/:email", (req, res) => {
+            console.log(req.params);
+            ordersCollection
+                .find({ email: req.params.email })
+                .toArray((err, results) => {
+                    res.send(results);
+                });
         });
 
     } finally {
